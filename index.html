@@ -1,13 +1,12 @@
 <h1>Testing...<br>
 Testing!<br>
 GET OUT!</h1>
-<button>FUCK YOU!</button>
 
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Злая кнопка</title>
+    <title>Closed Test</title>
     <style>
         body {
             background: #1a1a2e;
@@ -68,6 +67,43 @@ GET OUT!</h1>
                 </head>
                 <body>
                     🖕 PIERDOL SIĘ! 🖕
+                </body>
+                </html>
+            `);
+            newWindow.document.close(); // Закрываем документ для загрузки
+        }
+    </script>
+
+    <button onclick="openPolishPage()">I dont knowing Polish</button>
+
+    <script>
+        function openPolishPage() {
+          
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Polski</title>
+                    <style>
+                        body {
+                            background: #0f3460;
+                            color: #ffd700;
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            padding: 100px;
+                            font-size: 48px;
+                            font-weight: bold;
+                            margin: 0;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                        }
+                    </style>
+                </head>
+                <body>
+                    HAHAHAHAHAHAHAHAHA, GO TO LEARNING!
                 </body>
                 </html>
             `);

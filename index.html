@@ -2,260 +2,495 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Closed Test</title>
+    <title>🚨 ОСКОРБИТЕЛЬНЫЙ КВЕСТ</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            background: #1a1a2e;
+            background: #0b0b1a;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            position: relative;
         }
-        button {
-            padding: 30px 60px;
-            font-size: 32px;
+        #game-container {
+            background: #1a1a2e;
+            padding: 40px 60px;
+            border-radius: 40px;
+            box-shadow: 0 0 60px rgba(233, 69, 96, 0.3);
+            text-align: center;
+            position: relative;
+            max-width: 700px;
+            border: 2px solid #e94560;
+            transition: 0.3s;
+        }
+        #stats {
+            display: flex;
+            justify-content: space-between;
+            color: #ffd700;
+            font-size: 18px;
+            margin-bottom: 25px;
+            padding: 10px 20px;
+            background: #0f0f23;
+            border-radius: 20px;
+            border: 1px solid #e94560;
+        }
+        #stats span {
             font-weight: bold;
-            background: #e94560;
-            color: white;
+            color: #ff6b81;
+        }
+        #title {
+            color: #ffd700;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        #title .crab {
+            font-size: 40px;
+            display: inline-block;
+            animation: walk 1s infinite alternate;
+        }
+        @keyframes walk {
+            0% { transform: translateX(-5px) rotate(-5deg); }
+            100% { transform: translateX(5px) rotate(5deg); }
+        }
+        #message {
+            color: #fff;
+            font-size: 36px;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 80px;
+            padding: 20px;
+            background: #0f0f23;
+            border-radius: 20px;
+            border: 2px dashed #e94560;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        #message .emoji-big {
+            font-size: 50px;
+        }
+        #button-area {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 25px;
+        }
+        .game-btn {
+            padding: 18px 35px;
+            font-size: 22px;
+            font-weight: bold;
             border: none;
             border-radius: 20px;
             cursor: pointer;
-            box-shadow: 0 0 30px rgba(233, 69, 96, 0.5);
+            transition: 0.3s;
+            color: white;
+            min-width: 180px;
+            flex: 1;
+        }
+        .game-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 40px rgba(233, 69, 96, 0.6);
+        }
+        .btn-main {
+            background: #e94560;
+        }
+        .btn-next {
+            background: #1e90ff;
+        }
+        .btn-danger {
+            background: #ff3333;
+        }
+        .btn-success {
+            background: #2ecc71;
+        }
+        .btn-google {
+            background: #4285F4;
+        }
+        .btn-yandex {
+            background: #ff3333;
+        }
+        .btn-boss {
+            background: #9b59b6;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px #9b59b6; }
+            50% { box-shadow: 0 0 60px #9b59b6; }
+            100% { box-shadow: 0 0 20px #9b59b6; }
+        }
+        #boss-input {
+            padding: 15px 25px;
+            font-size: 24px;
+            border-radius: 20px;
+            border: 2px solid #e94560;
+            background: #0f0f23;
+            color: white;
+            text-align: center;
+            width: 250px;
+            outline: none;
+        }
+        #boss-input:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+        #lives {
+            color: #ff4757;
+            font-size: 28px;
+            letter-spacing: 5px;
+        }
+        #achievement {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #2ecc71;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.5);
+            opacity: 0;
+            transform: translateY(100px);
+            transition: 0.5s;
+            z-index: 999;
+        }
+        #achievement.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #crab-walk {
+            position: fixed;
+            bottom: 20px;
+            left: -100px;
+            font-size: 60px;
+            animation: crabMove 15s linear infinite;
+            z-index: 100;
+        }
+        @keyframes crabMove {
+            0% { left: -100px; }
+            100% { left: 110vw; }
+        }
+        .hidden {
+            display: none !important;
+        }
+        #restart-btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            background: #ff6b81;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            margin-top: 15px;
             transition: 0.3s;
         }
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 50px rgba(233, 69, 96, 0.8);
+        #restart-btn:hover {
+            transform: scale(1.05);
+        }
+        @media (max-width: 600px) {
+            #game-container { padding: 20px; }
+            #message { font-size: 24px; }
+            .game-btn { font-size: 16px; min-width: 120px; padding: 12px 20px; }
+            #title { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ГЛАВНАЯ КНОПКА -->
-    <button onclick="openFirstPage()">FUCK YOU!</button>
+    <!-- КРАБ-БЕГУН -->
+    <div id="crab-walk">🦀</div>
+
+    <!-- ДОСТИЖЕНИЕ -->
+    <div id="achievement">🏆 ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО!</div>
+
+    <!-- ОСНОВНОЙ ИГРОВОЙ КОНТЕЙНЕР -->
+    <div id="game-container">
+        <div id="stats">
+            <div>🗺️ ЭТАП: <span id="stage-counter">0</span>/6</div>
+            <div>❤️ ЖИЗНИ: <span id="lives">❤️❤️❤️</span></div>
+            <div>🦀 КРАБОВ: <span id="crab-count">1</span></div>
+        </div>
+
+        <div id="title">
+            <span class="crab">🦀</span>
+            <span id="title-text">ОСКОРБИТЕЛЬНЫЙ КВЕСТ</span>
+            <span class="crab">🦀</span>
+        </div>
+
+        <div id="message">
+            <span class="emoji-big">🤬</span>
+            <span id="message-text">Нажми на кнопку, чтобы начать</span>
+        </div>
+
+        <div id="button-area">
+            <button class="game-btn btn-main" id="main-btn" onclick="handleMain()">🚀 СТАРТ</button>
+        </div>
+
+        <button id="restart-btn" class="hidden" onclick="restartGame()">🔄 Играть заново</button>
+    </div>
 
     <script>
-        // Функция для первой страницы (PIERDOL SIĘ!)
-        function openFirstPage() {
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Polski</title>
-                    <style>
-                        body {
-                            background: #0f3460;
-                            color: #ffd700;
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            margin: 0;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            font-size: 48px;
-                            font-weight: bold;
-                            gap: 30px;
-                        }
-                        .btn-second {
-                            padding: 20px 40px;
-                            font-size: 24px;
-                            background: #e94560;
-                            color: white;
-                            border: none;
-                            border-radius: 15px;
-                            cursor: pointer;
-                            transition: 0.3s;
-                        }
-                        .btn-second:hover {
-                            transform: scale(1.1);
-                            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    🖕 PIERDOL SIĘ! 🖕
-                    <button class="btn-second" onclick="window.opener.openSecondPage()">I dont knowing Polish</button>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+        // ========== ИГРОВОЙ ДВИЖОК ==========
+        let state = {
+            stage: 0,          // 0=старт, 1-6 этапы
+            lives: 3,
+            crabCount: 1,
+            achievements: [],
+            gameOver: false,
+            bossAnswered: false
+        };
+
+        const stages = [
+            {
+                id: 'start',
+                title: '🚨 ТЫ ГОТОВ?',
+                message: 'Нажми на кнопку, чтобы начать свой путь унижений!',
+                emoji: '🤬',
+                buttons: [{ text: '🚀 СТАРТ', class: 'btn-main', action: 'next' }]
+            },
+            {
+                id: 'polish',
+                title: '🇵🇱 ПОЛЬСКИЙ УРОВЕНЬ',
+                message: '🖕 PIERDOL SIĘ! 🖕',
+                emoji: '🇵🇱',
+                buttons: [{ text: '🤷 I dont knowing Polish', class: 'btn-next', action: 'next' }]
+            },
+            {
+                id: 'english',
+                title: '🇬🇧 АНГЛИЙСКИЙ УРОВЕНЬ',
+                message: '🖕 Fuck you to! 🖕',
+                emoji: '🇬🇧',
+                buttons: [{ text: '🤷 I dont knowing English', class: 'btn-next', action: 'next' }]
+            },
+            {
+                id: 'russian',
+                title: '🇷🇺 РУССКИЙ УРОВЕНЬ',
+                message: '🖕 Сам иди к черту! 🖕',
+                emoji: '🇷🇺',
+                buttons: [{ text: '🤷 I dont knowing Russian', class: 'btn-next', action: 'next' }]
+            },
+            {
+                id: 'choice',
+                title: '🌍 ВЫБОР СУДЬБЫ',
+                message: 'Куда перенаправляемся?<br>Dokąd przekierowujemy?<br>Where are we redirecting?',
+                emoji: '🌍',
+                buttons: [
+                    { text: 'Google = American happiness / Polskie szczęście', class: 'btn-google', action: 'google' },
+                    { text: 'Яндекс = Нищета России', class: 'btn-yandex', action: 'yandex' }
+                ]
+            },
+            {
+                id: 'boss',
+                title: '👹 ФИНАЛЬНЫЙ БОСС',
+                message: 'Чтобы выйти, напиши "Я ЛОХ" (заглавными) и нажми Enter!',
+                emoji: '👹',
+                buttons: [] // special input
+            }
+        ];
+
+        function updateUI() {
+            document.getElementById('stage-counter').textContent = state.stage;
+            let hearts = '';
+            for (let i = 0; i < state.lives; i++) hearts += '❤️';
+            if (state.lives === 0) hearts = '💀';
+            document.getElementById('lives').textContent = hearts;
+            document.getElementById('crab-count').textContent = state.crabCount;
         }
 
-        // Функция для второй страницы (Fuck you to! + кнопка на русский)
-        function openSecondPage() {
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>English</title>
-                    <style>
-                        body {
-                            background: #0f3460;
-                            color: #ffd700;
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            margin: 0;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            font-size: 48px;
-                            font-weight: bold;
-                            gap: 30px;
-                        }
-                        .btn-second {
-                            padding: 20px 40px;
-                            font-size: 24px;
-                            background: #e94560;
-                            color: white;
-                            border: none;
-                            border-radius: 15px;
-                            cursor: pointer;
-                            transition: 0.3s;
-                        }
-                        .btn-second:hover {
-                            transform: scale(1.1);
-                            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    🖕 Fuck you to! 🖕
-                    <button class="btn-second" onclick="window.opener.openThirdPage()">I dont knowing English</button>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+        function showAchievement(text) {
+            const el = document.getElementById('achievement');
+            el.textContent = '🏆 ' + text;
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 3000);
         }
 
-        // Функция для третьей страницы (Сам иди к черту! + кнопка на русский)
-        function openThirdPage() {
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Russian</title>
-                    <style>
-                        body {
-                            background: #0f3460;
-                            color: #ffd700;
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            margin: 0;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            font-size: 48px;
-                            font-weight: bold;
-                            gap: 30px;
-                        }
-                        .btn-second {
-                            padding: 20px 40px;
-                            font-size: 24px;
-                            background: #e94560;
-                            color: white;
-                            border: none;
-                            border-radius: 15px;
-                            cursor: pointer;
-                            transition: 0.3s;
-                        }
-                        .btn-second:hover {
-                            transform: scale(1.1);
-                            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    🖕 Сам иди к черту! 🖕
-                    <button class="btn-second" onclick="window.opener.openFourthPage()">I dont knowing Russian</button>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+        function loseLife() {
+            state.lives--;
+            updateUI();
+            if (state.lives === 0) {
+                state.gameOver = true;
+                document.getElementById('message-text').innerHTML = '💀 ТЫ УМЕР ОТ ОСКОРБЛЕНИЙ! 💀';
+                document.getElementById('button-area').innerHTML = '';
+                document.getElementById('restart-btn').classList.remove('hidden');
+                document.getElementById('title-text').textContent = '☠️ GAME OVER ☠️';
+                // достижение
+                if (!state.achievements.includes('death')) {
+                    state.achievements.push('death');
+                    showAchievement('💀 "Смерть от оскорблений"');
+                }
+                return true;
+            }
+            return false;
         }
 
-        // Функция для четвёртой страницы (выбор поисковика)
-        function openFourthPage() {
-            const newWindow = window.open('', '_blank');
-            newWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Choose your destiny</title>
-                    <style>
-                        body {
-                            background: #0f3460;
-                            color: #ffd700;
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            margin: 0;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            height: 100vh;
-                            gap: 40px;
+        function renderStage(index) {
+            if (state.gameOver) return;
+            if (index >= stages.length) {
+                // победа!
+                document.getElementById('message-text').innerHTML = '🎉 ТЫ ПРОШЁЛ ВСЕ ЭТАПЫ! 🎉<br>🦀 КРАБ ТОБОЙ ГОРДИТСЯ!';
+                document.getElementById('button-area').innerHTML = '';
+                document.getElementById('restart-btn').classList.remove('hidden');
+                document.getElementById('title-text').textContent = '🏆 ПОБЕДА! 🏆';
+                if (!state.achievements.includes('winner')) {
+                    state.achievements.push('winner');
+                    showAchievement('🏆 "Профессиональный мазохист"');
+                }
+                return;
+            }
+
+            const stage = stages[index];
+            document.getElementById('title-text').textContent = stage.title;
+            document.getElementById('message-text').innerHTML = stage.message;
+            
+            const area = document.getElementById('button-area');
+            area.innerHTML = '';
+
+            if (stage.id === 'boss') {
+                // специальный босс-инпут
+                const input = document.createElement('input');
+                input.id = 'boss-input';
+                input.type = 'text';
+                input.placeholder = 'Введи "Я ЛОХ"';
+                input.autofocus = true;
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        if (this.value === 'Я ЛОХ') {
+                            state.bossAnswered = true;
+                            state.stage++;
+                            if (!state.achievements.includes('boss')) {
+                                state.achievements.push('boss');
+                                showAchievement('👹 "Победитель босса"');
+                            }
+                            state.crabCount += 5;
+                            updateUI();
+                            renderStage(state.stage);
+                        } else {
+                            if (loseLife()) return;
+                            showAchievement('😡 "Неправильный ответ! -1 жизнь"');
+                            this.value = '';
+                            this.style.borderColor = '#ff3333';
+                            setTimeout(() => this.style.borderColor = '#e94560', 500);
                         }
-                        h1 {
-                            font-size: 36px;
-                            margin: 0 20px;
+                    }
+                });
+                area.appendChild(input);
+                // кнопка для отправки
+                const submitBtn = document.createElement('button');
+                submitBtn.textContent = '✅ ПРОВЕРИТЬ';
+                submitBtn.className = 'game-btn btn-boss';
+                submitBtn.onclick = function() {
+                    const inp = document.getElementById('boss-input');
+                    if (inp.value === 'Я ЛОХ') {
+                        state.bossAnswered = true;
+                        state.stage++;
+                        if (!state.achievements.includes('boss')) {
+                            state.achievements.push('boss');
+                            showAchievement('👹 "Победитель босса"');
                         }
-                        .btn-group {
-                            display: flex;
-                            gap: 60px;
-                            flex-wrap: wrap;
-                            justify-content: center;
+                        state.crabCount += 5;
+                        updateUI();
+                        renderStage(state.stage);
+                    } else {
+                        if (loseLife()) return;
+                        showAchievement('😡 "Неправильный ответ! -1 жизнь"');
+                        inp.value = '';
+                        inp.style.borderColor = '#ff3333';
+                        setTimeout(() => inp.style.borderColor = '#e94560', 500);
+                    }
+                };
+                area.appendChild(submitBtn);
+                return;
+            }
+
+            stage.buttons.forEach(btn => {
+                const el = document.createElement('button');
+                el.textContent = btn.text;
+                el.className = `game-btn ${btn.class}`;
+                el.onclick = function() {
+                    if (state.gameOver) return;
+                    
+                    if (btn.action === 'next') {
+                        // переход на следующий этап
+                        state.stage++;
+                        // случайная потеря жизни (10% шанс, для хардкора)
+                        if (Math.random() < 0.1) {
+                            if (loseLife()) return;
+                            showAchievement('💥 "Случайная смерть! -1 жизнь"');
                         }
-                        .btn-choice {
-                            padding: 20px 40px;
-                            font-size: 28px;
-                            font-weight: bold;
-                            border: none;
-                            border-radius: 20px;
-                            cursor: pointer;
-                            transition: 0.3s;
-                            color: white;
-                            min-width: 200px;
+                        state.crabCount++;
+                        updateUI();
+                        renderStage(state.stage);
+                    } else if (btn.action === 'google') {
+                        if (!state.achievements.includes('google')) {
+                            state.achievements.push('google');
+                            showAchievement('🇺🇸 "Американское счастье"');
                         }
-                        .btn-google {
-                            background: #4285F4;
-                            box-shadow: 0 0 20px rgba(66, 133, 244, 0.5);
+                        state.crabCount += 2;
+                        updateUI();
+                        window.open('https://www.google.com', '_blank');
+                    } else if (btn.action === 'yandex') {
+                        if (!state.achievements.includes('yandex')) {
+                            state.achievements.push('yandex');
+                            showAchievement('🇷🇺 "Нищета России"');
                         }
-                        .btn-google:hover {
-                            transform: scale(1.1);
-                            box-shadow: 0 0 40px rgba(66, 133, 244, 0.8);
-                        }
-                        .btn-yandex {
-                            background: #ff3333;
-                            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
-                        }
-                        .btn-yandex:hover {
-                            transform: scale(1.1);
-                            box-shadow: 0 0 40px rgba(255, 51, 51, 0.8);
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1>Куда перенаправляемся?<br>Dokąd przekierowujemy?<br>Where are we redirecting?</h1>
-                    <div class="btn-group">
-                        <button class="btn-choice btn-google" onclick="window.location.href='https://www.google.com'">American happiness / Polskie szczęście</button>
-                        <button class="btn-choice btn-yandex" onclick="window.location.href='https://yandex.ru'">Нищета России</button>
-                    </div>
-                </body>
-                </html>
-            `);
-            newWindow.document.close();
+                        state.crabCount += 2;
+                        updateUI();
+                        window.open('https://yandex.ru', '_blank');
+                    }
+                };
+                area.appendChild(el);
+            });
         }
+
+        function handleMain() {
+            if (state.gameOver) return;
+            state.stage = 1;
+            state.crabCount = 3;
+            updateUI();
+            renderStage(1);
+            // достижение за старт
+            if (!state.achievements.includes('started')) {
+                state.achievements.push('started');
+                showAchievement('🚀 "Путь унижений начат"');
+            }
+        }
+
+        function restartGame() {
+            state.stage = 0;
+            state.lives = 3;
+            state.crabCount = 1;
+            state.gameOver = false;
+            state.achievements = [];
+            state.bossAnswered = false;
+            document.getElementById('restart-btn').classList.add('hidden');
+            document.getElementById('button-area').innerHTML = '';
+            updateUI();
+            document.getElementById('title-text').textContent = 'ОСКОРБИТЕЛЬНЫЙ КВЕСТ';
+            document.getElementById('message-text').innerHTML = 'Нажми на кнопку, чтобы начать';
+            const area = document.getElementById('button-area');
+            area.innerHTML = `<button class="game-btn btn-main" onclick="handleMain()">🚀 СТАРТ</button>`;
+        }
+
+        // инициализация
+        updateUI();
     </script>
 
 </body>

@@ -86,33 +86,171 @@
             newWindow.document.close();
         }
 
-        // Функция для второй страницы (HAHAHA...)
+        // Функция для второй страницы (Fuck you to! + кнопка на русский)
         function openSecondPage() {
             const newWindow = window.open('', '_blank');
             newWindow.document.write(`
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>HA!</title>
+                    <title>English</title>
                     <style>
                         body {
                             background: #0f3460;
                             color: #ffd700;
                             font-family: Arial, sans-serif;
                             text-align: center;
-                            padding: 100px;
-                            font-size: 48px;
-                            font-weight: bold;
                             margin: 0;
                             display: flex;
+                            flex-direction: column;
                             justify-content: center;
                             align-items: center;
                             height: 100vh;
+                            font-size: 48px;
+                            font-weight: bold;
+                            gap: 30px;
+                        }
+                        .btn-second {
+                            padding: 20px 40px;
+                            font-size: 24px;
+                            background: #e94560;
+                            color: white;
+                            border: none;
+                            border-radius: 15px;
+                            cursor: pointer;
+                            transition: 0.3s;
+                        }
+                        .btn-second:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
                         }
                     </style>
                 </head>
                 <body>
-                    HAHAHAHAHAHAHAHAHA, GO TO LEARNING!
+                    🖕 Fuck you to! 🖕
+                    <button class="btn-second" onclick="window.opener.openThirdPage()">I dont knowing English</button>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        // Функция для третьей страницы (Сам иди к черту! + кнопка на русский)
+        function openThirdPage() {
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Russian</title>
+                    <style>
+                        body {
+                            background: #0f3460;
+                            color: #ffd700;
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            margin: 0;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            font-size: 48px;
+                            font-weight: bold;
+                            gap: 30px;
+                        }
+                        .btn-second {
+                            padding: 20px 40px;
+                            font-size: 24px;
+                            background: #e94560;
+                            color: white;
+                            border: none;
+                            border-radius: 15px;
+                            cursor: pointer;
+                            transition: 0.3s;
+                        }
+                        .btn-second:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 0 30px rgba(233, 69, 96, 0.8);
+                        }
+                    </style>
+                </head>
+                <body>
+                    🖕 Сам иди к черту! 🖕
+                    <button class="btn-second" onclick="window.opener.openFourthPage()">I dont knowing Russian</button>
+                </body>
+                </html>
+            `);
+            newWindow.document.close();
+        }
+
+        // Функция для четвёртой страницы (выбор поисковика)
+        function openFourthPage() {
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Choose your destiny</title>
+                    <style>
+                        body {
+                            background: #0f3460;
+                            color: #ffd700;
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            margin: 0;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            height: 100vh;
+                            gap: 40px;
+                        }
+                        h1 {
+                            font-size: 36px;
+                            margin: 0 20px;
+                        }
+                        .btn-group {
+                            display: flex;
+                            gap: 60px;
+                            flex-wrap: wrap;
+                            justify-content: center;
+                        }
+                        .btn-choice {
+                            padding: 20px 40px;
+                            font-size: 28px;
+                            font-weight: bold;
+                            border: none;
+                            border-radius: 20px;
+                            cursor: pointer;
+                            transition: 0.3s;
+                            color: white;
+                            min-width: 200px;
+                        }
+                        .btn-google {
+                            background: #4285F4;
+                            box-shadow: 0 0 20px rgba(66, 133, 244, 0.5);
+                        }
+                        .btn-google:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 0 40px rgba(66, 133, 244, 0.8);
+                        }
+                        .btn-yandex {
+                            background: #ff3333;
+                            box-shadow: 0 0 20px rgba(255, 51, 51, 0.5);
+                        }
+                        .btn-yandex:hover {
+                            transform: scale(1.1);
+                            box-shadow: 0 0 40px rgba(255, 51, 51, 0.8);
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>Куда перенаправляемся?<br>Dokąd przekierowujemy?<br>Where are we redirecting?</h1>
+                    <div class="btn-group">
+                        <button class="btn-choice btn-google" onclick="window.location.href='https://www.google.com'">American happiness / Polskie szczęście</button>
+                        <button class="btn-choice btn-yandex" onclick="window.location.href='https://yandex.ru'">Нищета России</button>
+                    </div>
                 </body>
                 </html>
             `);

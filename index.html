@@ -18,6 +18,63 @@
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
             position: relative;
+            transition: 0.5s;
+        }
+        body.light {
+            background: #f0f0f0;
+        }
+        body.light #game-container {
+            background: #ffffff;
+            border-color: #333;
+            box-shadow: 0 0 60px rgba(0,0,0,0.2);
+        }
+        body.light #title {
+            color: #333;
+        }
+        body.light #message {
+            background: #f8f8f8;
+            border-color: #333;
+            color: #222;
+        }
+        body.light #stats {
+            background: #e8e8e8;
+            border-color: #333;
+            color: #222;
+        }
+        body.light #stats span {
+            color: #e94560;
+        }
+        body.cyber {
+            background: #0a0a0a;
+        }
+        body.cyber #game-container {
+            border-color: #00ffcc;
+            box-shadow: 0 0 80px rgba(0, 255, 204, 0.3);
+            background: #111122;
+        }
+        body.cyber #title {
+            color: #00ffcc;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.5);
+        }
+        body.cyber #message {
+            border-color: #00ffcc;
+            background: #0a0a1a;
+            color: #00ffcc;
+        }
+        body.cyber #stats {
+            border-color: #00ffcc;
+            background: #0a0a1a;
+            color: #00ffcc;
+        }
+        body.cyber .game-btn {
+            border: 2px solid #00ffcc;
+            background: transparent !important;
+            color: #00ffcc !important;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+        }
+        body.cyber .game-btn:hover {
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.6);
+            background: rgba(0, 255, 204, 0.1) !important;
         }
         #game-container {
             background: #1a1a2e;
@@ -28,7 +85,7 @@
             position: relative;
             max-width: 700px;
             border: 2px solid #e94560;
-            transition: 0.3s;
+            transition: 0.5s;
         }
         #stats {
             display: flex;
@@ -42,6 +99,7 @@
             border: 1px solid #e94560;
             flex-wrap: wrap;
             gap: 10px;
+            transition: 0.3s;
         }
         #stats span {
             font-weight: bold;
@@ -59,6 +117,7 @@
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
+            transition: 0.3s;
         }
         #title .crab {
             font-size: 40px;
@@ -84,6 +143,7 @@
             justify-content: center;
             gap: 15px;
             flex-wrap: wrap;
+            transition: 0.3s;
         }
         #message .emoji-big {
             font-size: 50px;
@@ -133,6 +193,13 @@
             background: #9b59b6;
             animation: pulse 1s infinite;
         }
+        .btn-theme {
+            background: #f39c12;
+            font-size: 16px;
+            padding: 10px 20px;
+            min-width: auto;
+            flex: 0.5;
+        }
         @keyframes pulse {
             0% { box-shadow: 0 0 20px #9b59b6; }
             50% { box-shadow: 0 0 60px #9b59b6; }
@@ -148,6 +215,7 @@
             text-align: center;
             width: 250px;
             outline: none;
+            transition: 0.3s;
         }
         #boss-input:focus {
             border-color: #ffd700;
@@ -215,16 +283,103 @@
             border-color: #2ecc71 !important;
             box-shadow: 0 0 40px rgba(46, 204, 113, 0.8) !important;
         }
+        #theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 999;
+        }
+        .theme-btn {
+            padding: 8px 16px;
+            border: 2px solid white;
+            border-radius: 15px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+        .theme-btn.dark { background: #1a1a2e; border-color: #e94560; }
+        .theme-btn.light { background: #f0f0f0; color: #222; border-color: #333; }
+        .theme-btn.cyber { background: #00ffcc; color: #0a0a0a; border-color: #00ffcc; }
+        .stat-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+            color: white;
+            font-size: 24px;
+            gap: 20px;
+        }
+        .stat-overlay.show {
+            display: flex;
+        }
+        .stat-box {
+            background: #1a1a2e;
+            padding: 40px 60px;
+            border-radius: 30px;
+            border: 2px solid #e94560;
+            max-width: 500px;
+            text-align: center;
+        }
+        .stat-box h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+        .stat-box p {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+        .stat-box .highlight {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        .close-stats {
+            padding: 15px 40px;
+            font-size: 20px;
+            background: #e94560;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .close-stats:hover {
+            transform: scale(1.05);
+        }
         @media (max-width: 600px) {
             #game-container { padding: 20px; }
             #message { font-size: 24px; }
             .game-btn { font-size: 16px; min-width: 120px; padding: 12px 20px; }
             #title { font-size: 20px; }
             #boss-input { width: 180px; font-size: 18px; }
+            #theme-selector { top: 10px; right: 10px; }
+            .theme-btn { font-size: 12px; padding: 5px 10px; }
+            .stat-box { padding: 20px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ТЕМЫ -->
+    <div id="theme-selector">
+        <button class="theme-btn dark" onclick="setTheme('dark')">🌙 Тёмная</button>
+        <button class="theme-btn light" onclick="setTheme('light')">☀️ Светлая</button>
+        <button class="theme-btn cyber" onclick="setTheme('cyber')">💠 Киберпанк</button>
+    </div>
 
     <!-- КРАБ-БЕГУН -->
     <div id="crab-walk">🦀</div>
@@ -232,12 +387,26 @@
     <!-- ДОСТИЖЕНИЕ -->
     <div id="achievement">🏆 ДОСТИЖЕНИЕ РАЗБЛОКИРОВАНО!</div>
 
+    <!-- СТАТИСТИКА -->
+    <div class="stat-overlay" id="stat-overlay">
+        <div class="stat-box">
+            <h2>📊 СТАТИСТИКА ИГРЫ</h2>
+            <p>⏱️ Время: <span class="highlight" id="stat-time">0</span> сек.</p>
+            <p>🖱️ Нажатий: <span class="highlight" id="stat-clicks">0</span></p>
+            <p>🦀 Крабов собрано: <span class="highlight" id="stat-crabs">0</span></p>
+            <p>❤️ Потеряно жизней: <span class="highlight" id="stat-lives">0</span></p>
+            <p>🏆 Достижений: <span class="highlight" id="stat-achieve">0</span></p>
+            <button class="close-stats" onclick="closeStats()">✅ Закрыть</button>
+        </div>
+    </div>
+
     <!-- ОСНОВНОЙ ИГРОВОЙ КОНТЕЙНЕР -->
     <div id="game-container">
         <div id="stats">
             <div>🗺️ ЭТАП: <span id="stage-counter">0</span>/7</div>
             <div>❤️ ЖИЗНИ: <span id="lives">❤️❤️❤️</span></div>
             <div>🦀 КРАБОВ: <span id="crab-count">1</span></div>
+            <div>🖱️ КЛИКОВ: <span id="click-counter">0</span></div>
         </div>
 
         <div id="title">
@@ -256,18 +425,80 @@
         </div>
 
         <button id="restart-btn" class="hidden" onclick="restartGame()">🔄 Играть заново</button>
+        <br>
+        <button class="game-btn btn-theme" onclick="showStats()" style="margin-top: 10px;">📊 Статистика</button>
     </div>
 
     <script>
         // ========== ИГРОВОЙ ДВИЖОК ==========
         let state = {
-            stage: 0,          // 0=старт, 1-7 этапы
+            stage: 0,
             lives: 3,
             crabCount: 1,
             achievements: [],
             gameOver: false,
-            bossAnswered: false
+            bossAnswered: false,
+            clicks: 0,
+            startTime: Date.now(),
+            livesLost: 0
         };
+
+        let audioCtx = null;
+
+        // ЗВУКИ
+        function playSound(type) {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                if (type === 'click') {
+                    osc.frequency.value = 600;
+                    gain.gain.value = 0.1;
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if (type === 'achievement') {
+                    osc.frequency.value = 800;
+                    gain.gain.value = 0.15;
+                    osc.start();
+                    setTimeout(() => {
+                        osc.frequency.value = 1000;
+                    }, 100);
+                    osc.stop(audioCtx.currentTime + 0.2);
+                } else if (type === 'death') {
+                    osc.frequency.value = 200;
+                    gain.gain.value = 0.2;
+                    osc.start();
+                    setTimeout(() => {
+                        osc.frequency.value = 150;
+                    }, 200);
+                    osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'win') {
+                    osc.frequency.value = 500;
+                    gain.gain.value = 0.15;
+                    osc.start();
+                    setTimeout(() => { osc.frequency.value = 600; }, 100);
+                    setTimeout(() => { osc.frequency.value = 800; }, 200);
+                    setTimeout(() => { osc.frequency.value = 1000; }, 300);
+                    osc.stop(audioCtx.currentTime + 0.5);
+                } else if (type === 'boss') {
+                    osc.frequency.value = 300;
+                    gain.gain.value = 0.2;
+                    osc.start();
+                    setTimeout(() => {
+                        osc.frequency.value = 500;
+                    }, 150);
+                    setTimeout(() => {
+                        osc.frequency.value = 700;
+                    }, 300);
+                    osc.stop(audioCtx.currentTime + 0.5);
+                }
+            } catch(e) {
+                // тихо игнорим, если звук не работает
+            }
+        }
 
         const stages = [
             {
@@ -303,7 +534,7 @@
                 title: '👹 ФИНАЛЬНЫЙ БОСС (КАПЧА)',
                 message: 'Чтобы пройти дальше, напиши "Я ЛОХ" (заглавными) и нажми Enter!',
                 emoji: '👹',
-                buttons: [] // special input
+                buttons: []
             },
             {
                 id: 'choice',
@@ -324,17 +555,21 @@
             if (state.lives === 0) hearts = '💀';
             document.getElementById('lives').textContent = hearts;
             document.getElementById('crab-count').textContent = state.crabCount;
+            document.getElementById('click-counter').textContent = state.clicks;
         }
 
         function showAchievement(text) {
             const el = document.getElementById('achievement');
             el.textContent = '🏆 ' + text;
             el.classList.add('show');
+            playSound('achievement');
             setTimeout(() => el.classList.remove('show'), 3000);
         }
 
         function loseLife() {
             state.lives--;
+            state.livesLost++;
+            playSound('death');
             updateUI();
             if (state.lives === 0) {
                 state.gameOver = true;
@@ -354,11 +589,11 @@
         function renderStage(index) {
             if (state.gameOver) return;
             if (index >= stages.length) {
-                // победа!
                 document.getElementById('message-text').innerHTML = '🎉 ТЫ ПРОШЁЛ ВСЕ ЭТАПЫ! 🎉<br>🦀 КРАБ ТОБОЙ ГОРДИТСЯ!';
                 document.getElementById('button-area').innerHTML = '';
                 document.getElementById('restart-btn').classList.remove('hidden');
                 document.getElementById('title-text').textContent = '🏆 ПОБЕДА! 🏆';
+                playSound('win');
                 if (!state.achievements.includes('winner')) {
                     state.achievements.push('winner');
                     showAchievement('🏆 "Профессиональный мазохист"');
@@ -374,7 +609,6 @@
             area.innerHTML = '';
 
             if (stage.id === 'boss') {
-                // БОСС-КАПЧА
                 const input = document.createElement('input');
                 input.id = 'boss-input';
                 input.type = 'text';
@@ -404,6 +638,8 @@
                 el.className = `game-btn ${btn.class}`;
                 el.onclick = function() {
                     if (state.gameOver) return;
+                    state.clicks++;
+                    playSound('click');
                     
                     if (btn.action === 'next') {
                         state.stage++;
@@ -438,10 +674,12 @@
 
         function checkBossAnswer(input) {
             if (state.gameOver) return;
+            state.clicks++;
             
             if (input.value === 'Я ЛОХ') {
                 state.bossAnswered = true;
                 state.stage++;
+                playSound('boss');
                 if (!state.achievements.includes('boss')) {
                     state.achievements.push('boss');
                     showAchievement('👹 "Победитель босса"');
@@ -468,8 +706,11 @@
 
         function handleMain() {
             if (state.gameOver) return;
+            state.clicks++;
+            playSound('click');
             state.stage = 1;
             state.crabCount = 3;
+            state.startTime = Date.now();
             updateUI();
             renderStage(1);
             if (!state.achievements.includes('started')) {
@@ -485,6 +726,9 @@
             state.gameOver = false;
             state.achievements = [];
             state.bossAnswered = false;
+            state.clicks = 0;
+            state.livesLost = 0;
+            state.startTime = Date.now();
             document.getElementById('restart-btn').classList.add('hidden');
             document.getElementById('button-area').innerHTML = '';
             updateUI();
@@ -492,6 +736,29 @@
             document.getElementById('message-text').innerHTML = 'Нажми на кнопку, чтобы начать';
             const area = document.getElementById('button-area');
             area.innerHTML = `<button class="game-btn btn-main" onclick="handleMain()">🚀 СТАРТ</button>`;
+        }
+
+        // ТЕМЫ
+        function setTheme(theme) {
+            document.body.className = theme;
+            playSound('click');
+        }
+
+        // СТАТИСТИКА
+        function showStats() {
+            const elapsed = Math.floor((Date.now() - state.startTime) / 1000);
+            document.getElementById('stat-time').textContent = elapsed;
+            document.getElementById('stat-clicks').textContent = state.clicks;
+            document.getElementById('stat-crabs').textContent = state.crabCount;
+            document.getElementById('stat-lives').textContent = state.livesLost;
+            document.getElementById('stat-achieve').textContent = state.achievements.length;
+            document.getElementById('stat-overlay').classList.add('show');
+            playSound('click');
+        }
+
+        function closeStats() {
+            document.getElementById('stat-overlay').classList.remove('show');
+            playSound('click');
         }
 
         // инициализация

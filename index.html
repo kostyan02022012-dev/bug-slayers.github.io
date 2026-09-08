@@ -40,6 +40,8 @@
             background: #0f0f23;
             border-radius: 20px;
             border: 1px solid #e94560;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         #stats span {
             font-weight: bold;
@@ -205,11 +207,20 @@
         #restart-btn:hover {
             transform: scale(1.05);
         }
+        .boss-wrong {
+            border-color: #ff3333 !important;
+            box-shadow: 0 0 40px rgba(255, 51, 51, 0.8) !important;
+        }
+        .boss-correct {
+            border-color: #2ecc71 !important;
+            box-shadow: 0 0 40px rgba(46, 204, 113, 0.8) !important;
+        }
         @media (max-width: 600px) {
             #game-container { padding: 20px; }
             #message { font-size: 24px; }
             .game-btn { font-size: 16px; min-width: 120px; padding: 12px 20px; }
             #title { font-size: 20px; }
+            #boss-input { width: 180px; font-size: 18px; }
         }
     </style>
 </head>
@@ -224,7 +235,7 @@
     <!-- ОСНОВНОЙ ИГРОВОЙ КОНТЕЙНЕР -->
     <div id="game-container">
         <div id="stats">
-            <div>🗺️ ЭТАП: <span id="stage-counter">0</span>/6</div>
+            <div>🗺️ ЭТАП: <span id="stage-counter">0</span>/7</div>
             <div>❤️ ЖИЗНИ: <span id="lives">❤️❤️❤️</span></div>
             <div>🦀 КРАБОВ: <span id="crab-count">1</span></div>
         </div>
@@ -250,7 +261,7 @@
     <script>
         // ========== ИГРОВОЙ ДВИЖОК ==========
         let state = {
-            stage: 0,          // 0=старт, 1-6 этапы
+            stage: 0,          // 0=старт, 1-7 этапы
             lives: 3,
             crabCount: 1,
             achievements: [],
@@ -288,6 +299,13 @@
                 buttons: [{ text: '🤷 I dont knowing Russian', class: 'btn-next', action: 'next' }]
             },
             {
+                id: 'boss',
+                title: '👹 ФИНАЛЬНЫЙ БОСС (КАПЧА)',
+                message: 'Чтобы пройти дальше, напиши "Я ЛОХ" (заглавными) и нажми Enter!',
+                emoji: '👹',
+                buttons: [] // special input
+            },
+            {
                 id: 'choice',
                 title: '🌍 ВЫБОР СУДЬБЫ',
                 message: 'Куда перенаправляемся?<br>Dokąd przekierowujemy?<br>Where are we redirecting?',
@@ -296,13 +314,6 @@
                     { text: 'Google = American happiness / Polskie szczęście', class: 'btn-google', action: 'google' },
                     { text: 'Яндекс = Нищета России', class: 'btn-yandex', action: 'yandex' }
                 ]
-            },
-            {
-                id: 'boss',
-                title: '👹 ФИНАЛЬНЫЙ БОСС',
-                message: 'Чтобы выйти, напиши "Я ЛОХ" (заглавными) и нажми Enter!',
-                emoji: '👹',
-                buttons: [] // special input
             }
         ];
 
@@ -331,7 +342,6 @@
                 document.getElementById('button-area').innerHTML = '';
                 document.getElementById('restart-btn').classList.remove('hidden');
                 document.getElementById('title-text').textContent = '☠️ GAME OVER ☠️';
-                // достижение
                 if (!state.achievements.includes('death')) {
                     state.achievements.push('death');
                     showAchievement('💀 "Смерть от оскорблений"');
@@ -364,7 +374,7 @@
             area.innerHTML = '';
 
             if (stage.id === 'boss') {
-                // специальный босс-инпут
+                // БОСС-КАПЧА
                 const input = document.createElement('input');
                 input.id = 'boss-input';
                 input.type = 'text';
@@ -372,49 +382,17 @@
                 input.autofocus = true;
                 input.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter') {
-                        if (this.value === 'Я ЛОХ') {
-                            state.bossAnswered = true;
-                            state.stage++;
-                            if (!state.achievements.includes('boss')) {
-                                state.achievements.push('boss');
-                                showAchievement('👹 "Победитель босса"');
-                            }
-                            state.crabCount += 5;
-                            updateUI();
-                            renderStage(state.stage);
-                        } else {
-                            if (loseLife()) return;
-                            showAchievement('😡 "Неправильный ответ! -1 жизнь"');
-                            this.value = '';
-                            this.style.borderColor = '#ff3333';
-                            setTimeout(() => this.style.borderColor = '#e94560', 500);
-                        }
+                        checkBossAnswer(this);
                     }
                 });
                 area.appendChild(input);
-                // кнопка для отправки
+                
                 const submitBtn = document.createElement('button');
                 submitBtn.textContent = '✅ ПРОВЕРИТЬ';
                 submitBtn.className = 'game-btn btn-boss';
                 submitBtn.onclick = function() {
                     const inp = document.getElementById('boss-input');
-                    if (inp.value === 'Я ЛОХ') {
-                        state.bossAnswered = true;
-                        state.stage++;
-                        if (!state.achievements.includes('boss')) {
-                            state.achievements.push('boss');
-                            showAchievement('👹 "Победитель босса"');
-                        }
-                        state.crabCount += 5;
-                        updateUI();
-                        renderStage(state.stage);
-                    } else {
-                        if (loseLife()) return;
-                        showAchievement('😡 "Неправильный ответ! -1 жизнь"');
-                        inp.value = '';
-                        inp.style.borderColor = '#ff3333';
-                        setTimeout(() => inp.style.borderColor = '#e94560', 500);
-                    }
+                    checkBossAnswer(inp);
                 };
                 area.appendChild(submitBtn);
                 return;
@@ -428,9 +406,7 @@
                     if (state.gameOver) return;
                     
                     if (btn.action === 'next') {
-                        // переход на следующий этап
                         state.stage++;
-                        // случайная потеря жизни (10% шанс, для хардкора)
                         if (Math.random() < 0.1) {
                             if (loseLife()) return;
                             showAchievement('💥 "Случайная смерть! -1 жизнь"');
@@ -460,13 +436,42 @@
             });
         }
 
+        function checkBossAnswer(input) {
+            if (state.gameOver) return;
+            
+            if (input.value === 'Я ЛОХ') {
+                state.bossAnswered = true;
+                state.stage++;
+                if (!state.achievements.includes('boss')) {
+                    state.achievements.push('boss');
+                    showAchievement('👹 "Победитель босса"');
+                }
+                state.crabCount += 5;
+                input.classList.remove('boss-wrong');
+                input.classList.add('boss-correct');
+                setTimeout(() => {
+                    input.classList.remove('boss-correct');
+                    updateUI();
+                    renderStage(state.stage);
+                }, 500);
+            } else {
+                if (loseLife()) return;
+                showAchievement('😡 "Неправильный ответ! -1 жизнь"');
+                input.classList.add('boss-wrong');
+                setTimeout(() => {
+                    input.classList.remove('boss-wrong');
+                    input.value = '';
+                    input.focus();
+                }, 500);
+            }
+        }
+
         function handleMain() {
             if (state.gameOver) return;
             state.stage = 1;
             state.crabCount = 3;
             updateUI();
             renderStage(1);
-            // достижение за старт
             if (!state.achievements.includes('started')) {
                 state.achievements.push('started');
                 showAchievement('🚀 "Путь унижений начат"');
